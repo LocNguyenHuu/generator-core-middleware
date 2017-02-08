@@ -9,17 +9,10 @@ var chalk = require('chalk');
 var rename = require("gulp-rename");
 
 const middlewarePostfix = '-middleware';
-const classPostfix = 'Middleware';
 
 function makeGeneratorName(name) {
   name = _.kebabCase(name);
   name = name.slice(-middlewarePostfix.length) == middlewarePostfix ? name : name + middlewarePostfix;
-  return name;
-}
-
-function makeClassName(name) {
-  name = _.kebabCase(name);
-  name = name.slice(-classPostfix.length) == classPostfix ? name : name + classPostfix;
   return name;
 }
 
@@ -45,23 +38,11 @@ module.exports = class extends Generator {
       }
     },
     {
-      type: 'input',
-      name: 'namespace',
-      message: 'What should the namespace of the project be called?',
-      default: path.basename(process.cwd()),
-      validate: str => {
-        return str.length > 0;
-      }
-    },
-    {
-      type: 'input',
-      name: 'classname',
-      message: 'What should the class of the project be called?',
-      default: makeClassName(path.basename(process.cwd())),
-      validate: str => {
-        return str.length > 0;
-      }
-    }];
+      type: 'confirm',
+      name: 'jenkinsfile',
+      message: 'Do you want me to generate a Jenkinsfile for you?',
+    }
+    ];
 
     return this.prompt(prompts).then(function (props) {
       // To access props later use this.props.someAnswer;
@@ -69,7 +50,7 @@ module.exports = class extends Generator {
     }.bind(this));
   }
 
-  default() {
+  default() {    
     if (path.basename(this.destinationPath()) !== this.props.name) {
       this.log(
         'Your generator must be inside a folder named ' + this.props.name + '\n' +
@@ -83,76 +64,32 @@ module.exports = class extends Generator {
   }
 
   writing() {
-    var THAT = this;
+
+    var CLASSNAME = _.upperFirst(_.camelCase(this.props.name));
+    var NAMESPACE = CLASSNAME.replace('Middleware', '');
+    
+    var TMP = this;
         this.registerTransformStream(rename(function(path) {
-            path.basename = path.basename.replace(/(_name_)/g, THAT.props.name);
-            path.basename = path.basename.replace(/(_classname_)/g, THAT.props.classname);
-            path.dirname = path.dirname.replace(/(_name_)/g, THAT.props.name);
+            path.basename = path.basename.replace(/(_name_)/g, TMP.props.name);
+            path.basename = path.basename.replace(/(_classname_)/g, CLASSNAME);
+            path.dirname = path.dirname.replace(/(_name_)/g, TMP.props.name);
         }));
         
     this.fs.copyTpl(
               this.templatePath('**/*'),
               this.destinationPath(), {
                   name: this.props.name,
-                  classname: this.props.classname,
-                  namespace: this.props.namespace
-              }
+                  classname: CLASSNAME,
+                  namespace: NAMESPACE
+              }            
           );
   }
 
   install() {
     // this.installDependencies({bower: false});
   }
+
+  end() {
+    this.spawnCommand('dotnet', ['restore']);
+  }
 };
-
-
-
-
-
-// 'use strict';
-// var Generator = require('yeoman-generator');
-// var chalk = require('chalk');
-// var yosay = require('yosay');
-
-// function makeProjectName(name) {
-//   name = _.kebabCase(name);
-//   name = name.indexOf('-middleware') === 0 ? name : name + '-middleware';
-//   return name;
-// }
-
-// module.exports = Generator.extend({
-//   prompting: function () {
-//     // Have Yeoman greet the user.
-//     this.log(yosay(
-//       'Welcome to the epic ' + chalk.red('generator-core-middleware') + ' generator!'
-//     ));
-
-//     var prompts = [{
-//       type: 'input',
-//       name: 'projectName',
-//       message: 'What should the middleware be called. e.g. performance-logger?',
-//       default: makeProjectName(path.basename(process.cwd())),
-//       filter: makeProjectName,
-//       validate: str => {
-//         return str.length > '-middleware'.length;
-//       }
-//     }];
-
-//     return this.prompt(prompts).then(function (props) {
-//       // To access props later use this.props.someAnswer;
-//       this.props = props;
-//     }.bind(this));
-//   },
-
-//   writing: function () {
-//     this.fs.copy(
-//       //replace placeholders....
-//       this.templatePath('dummyfile.txt'),
-//       this.destinationPath('dummyfile.txt')
-//     );
-//   },
-
-//   install: function () {
-//     // this.installDependencies();
-//   }
-// });
