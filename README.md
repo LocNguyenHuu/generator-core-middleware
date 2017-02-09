@@ -1,4 +1,4 @@
-# generator-core-middleware [![NPM version][npm-image]][npm-url]
+# generator-core-middleware [![NPM version][npm-image]][https://www.npmjs.com/package/generator-core-middleware]
 > Generates ASP.net core middleware project with unittests and nuget configuration
 
 ## Installation
