@@ -1,15 +1,37 @@
 ﻿using System;
-using Microsoft.Extensions.Logging;
+using System.Net.Http;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Xunit;
+using Microsoft.AspNetCore.TestHost;
+using <%- namespace %>;
 
 namespace <%- namespace %>.Tests
 {
     public class Tests
     {
-        [Fact]
-        public void Test1() 
+       [Fact]
+        public async void CallMiddleware_WithValidOptions_ThrowsNoException()
         {
-            Assert.NotNull("asdf");
+            //Arrange
+            var builder = new WebHostBuilder()
+                .Configure(app =>
+                {
+                    app.Use<%- classname %>(new <%- classname %>Options());
+                    app.UseMiddleware<FakeMiddleware>(TimeSpan.FromMilliseconds(5));
+                });
+
+            var server = new TestServer(builder);
+
+            //Act 
+            var requestMessage = new HttpRequestMessage(new HttpMethod("GET"), "/delay/");
+            var responseMessage = await server.CreateClient().SendAsync(requestMessage);
+
+            //Assert
+            //define your own assertation here. You could for example use the fakemiddleware to output some response like
+            // await context.Response.WriteAsync("something"); 
+            // and then check the result:
+            // Assert.Contains("something", responseMessage.Content.ReadAsStringAsync().Result);
         }
     }
 }
