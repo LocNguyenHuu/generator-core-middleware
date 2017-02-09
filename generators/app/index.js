@@ -36,11 +36,6 @@ module.exports = class extends Generator {
       validate: str => {
         return str.length > middlewarePostfix.length;
       }
-    },
-    {
-      type: 'confirm',
-      name: 'jenkinsfile',
-      message: 'Do you want me to generate a Jenkinsfile for you?',
     }
     ];
 
