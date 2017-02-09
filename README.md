@@ -1,4 +1,4 @@
-# generator-core-middleware [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
+# generator-core-middleware [![NPM version][npm-image]][npm-url]
 > Generates ASP.net core middleware project with unittests and nuget configuration
 
 ## Installation

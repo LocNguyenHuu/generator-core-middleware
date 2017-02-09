@@ -1,11 +1,11 @@
 {
   "name": "generator-core-middleware",
-  "version": "0.0.0",
+  "version": "1.0.1",
   "description": "Generates ASP.net core middleware project with unittests and nuget configuration",
-  "homepage": "https://github.scania.com/Scania/generator-core-middleware",
+  "homepage": "https://github.com/schwamster/generator-core-middleware",
   "author": {
-    "name": "Jonas",
-    "email": "jonas.frogvall@scania.com",
+    "name": "Bastian Töpfer",
+    "email": "bastian.toepfer@gmail.com",
     "url": ""
   },
   "files": [
@@ -18,7 +18,6 @@
     "yeoman-generator"
   ],
   "dependencies": {
-
     "chalk": "^1.1.3",
     "deep-extend": "^0.4.1",
     "yosay": "^1.2.1",
@@ -47,7 +46,7 @@
       "mocha": true
     }
   },
-  "repository": "Scania/generator-core-middleware",
+  "repository": "schwamster/generator-core-middleware",
   "scripts": {
     "prepublish": "gulp prepublish",
     "test": "gulp"
