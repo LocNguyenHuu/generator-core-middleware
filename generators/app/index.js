@@ -76,8 +76,12 @@ module.exports = class extends Generator {
                   name: this.props.name,
                   classname: CLASSNAME,
                   namespace: NAMESPACE
-              }            
-          );
+        }            
+    );
+    this.fs.copy(
+      this.templatePath('.gitignore'),
+      this.destinationPath() + '/.gitignore'
+    )  
   }
 
   install() {
