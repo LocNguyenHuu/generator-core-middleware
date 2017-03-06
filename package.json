@@ -1,6 +1,6 @@
 {
   "name": "generator-core-middleware",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Generates ASP.net core middleware project with unittests and nuget configuration",
   "homepage": "https://github.com/schwamster/generator-core-middleware",
   "author": {
